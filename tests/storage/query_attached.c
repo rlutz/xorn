@@ -39,7 +39,7 @@ static void assert_attached_objects_0(
 	assert(count == 0);
 	free(objects);
 
-	assert(sel = xorn_select_attached_to(rev, attached_to));
+	assert((sel = xorn_select_attached_to(rev, attached_to)));
 	assert(xorn_get_selected_objects(rev, sel, &objects, &count) == 0);
 	assert(count == 0);
 	free(objects);
@@ -66,7 +66,7 @@ static void assert_attached_objects_1(
 	assert(objects[0] == ob0);
 	free(objects);
 
-	assert(sel = xorn_select_attached_to(rev, attached_to));
+	assert((sel = xorn_select_attached_to(rev, attached_to)));
 	assert(xorn_get_selected_objects(rev, sel, &objects, &count) == 0);
 	assert(objects != NULL);
 	assert(count == 1);
@@ -96,7 +96,7 @@ static void assert_attached_objects_2(
 	assert(objects[1] == ob1);
 	free(objects);
 
-	assert(sel = xorn_select_attached_to(rev, attached_to));
+	assert((sel = xorn_select_attached_to(rev, attached_to)));
 	assert(xorn_get_selected_objects(rev, sel, &objects, &count) == 0);
 	assert(objects != NULL);
 	assert(count == 2);
@@ -128,7 +128,7 @@ static void assert_attached_objects_3(
 	assert(objects[2] == ob2);
 	free(objects);
 
-	assert(sel = xorn_select_attached_to(rev, attached_to));
+	assert((sel = xorn_select_attached_to(rev, attached_to)));
 	assert(xorn_get_selected_objects(rev, sel, &objects, &count) == 0);
 	assert(objects != NULL);
 	assert(count == 3);
@@ -162,14 +162,14 @@ int main(void)
 	struct xornsch_text text_data;
 	xorn_object_t N, a, b;
 
-	assert(rev = xorn_new_revision(NULL));
+	assert((rev = xorn_new_revision(NULL)));
 
 	memset(&net_data, 0, sizeof net_data);
-	assert(N = xornsch_add_net(rev, &net_data, NULL));
+	assert((N = xornsch_add_net(rev, &net_data, NULL)));
 
 	memset(&text_data, 0, sizeof text_data);
-	assert(a = xornsch_add_text(rev, &text_data, NULL));
-	assert(b = xornsch_add_text(rev, &text_data, NULL));
+	assert((a = xornsch_add_text(rev, &text_data, NULL)));
+	assert((b = xornsch_add_text(rev, &text_data, NULL)));
 
 	assert_attached_objects_3(rev, _, N, a, b);
 	assert_attached_objects_0(rev, N);

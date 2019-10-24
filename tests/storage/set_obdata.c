@@ -86,9 +86,9 @@ int main(void)
 	memset(&component_data, 0, sizeof component_data);
 	memset(&text_data, 0, sizeof text_data);
 
-	assert(rev = xorn_new_revision(NULL));
-	assert(ob0 = xornsch_add_line(rev, &line_data, NULL));
-	assert(ob1 = xornsch_add_line(rev, &line_data, NULL));
+	assert((rev = xorn_new_revision(NULL)));
+	assert((ob0 = xornsch_add_line(rev, &line_data, NULL)));
+	assert((ob1 = xornsch_add_line(rev, &line_data, NULL)));
 
 	assert(xornsch_set_net_data(rev, ob0, &net_data, NULL) == 0);
 	assert(xornsch_set_text_data(rev, ob1, &text_data, NULL) == 0);

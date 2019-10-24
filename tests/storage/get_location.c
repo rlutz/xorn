@@ -127,14 +127,14 @@ static void check_attach(void)
 	struct xornsch_net net_data;
 	struct xornsch_text text_data;
 
-	assert(rev = xorn_new_revision(NULL));
+	assert((rev = xorn_new_revision(NULL)));
 
 	memset(&net_data, 0, sizeof net_data);
-	assert(N = xornsch_add_net(rev, &net_data, NULL));
+	assert((N = xornsch_add_net(rev, &net_data, NULL)));
 
 	memset(&text_data, 0, sizeof text_data);
-	assert(a = xornsch_add_text(rev, &text_data, NULL));
-	assert(b = xornsch_add_text(rev, &text_data, NULL));
+	assert((a = xornsch_add_text(rev, &text_data, NULL)));
+	assert((b = xornsch_add_text(rev, &text_data, NULL)));
 
 	assert_object_location(rev, N, _, 0);
 	assert_object_location(rev, a, _, 1);

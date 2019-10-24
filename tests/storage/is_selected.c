@@ -26,7 +26,7 @@ int main(void)
 
 	setup(&rev0, &rev1, &rev2, &rev3, &ob0, &ob1a, &ob1b);
 
-	assert(sel = xorn_select_none());
+	assert((sel = xorn_select_none()));
 	assert(xorn_object_is_selected(rev0, sel, ob0) == false);
 	assert(xorn_object_is_selected(rev0, sel, ob1a) == false);
 	assert(xorn_object_is_selected(rev0, sel, ob1b) == false);
@@ -41,7 +41,7 @@ int main(void)
 	assert(xorn_object_is_selected(rev3, sel, ob1b) == false);
 	xorn_free_selection(sel);
 
-	assert(sel = xorn_select_object(ob1a));
+	assert((sel = xorn_select_object(ob1a)));
 	assert(xorn_object_is_selected(rev0, sel, ob0) == false);
 	assert(xorn_object_is_selected(rev0, sel, ob1a) == false);
 	assert(xorn_object_is_selected(rev0, sel, ob1b) == false);
@@ -56,7 +56,7 @@ int main(void)
 	assert(xorn_object_is_selected(rev3, sel, ob1b) == false);
 	xorn_free_selection(sel);
 
-	assert(sel = xorn_select_all(rev3));
+	assert((sel = xorn_select_all(rev3)));
 	assert(xorn_object_is_selected(rev0, sel, ob0) == false);
 	assert(xorn_object_is_selected(rev0, sel, ob1a) == false);
 	assert(xorn_object_is_selected(rev0, sel, ob1b) == false);

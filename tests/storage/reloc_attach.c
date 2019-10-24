@@ -140,7 +140,7 @@ static void check_delete_0(xorn_revision_t rev, xorn_object_t del)
 	xorn_object_t *objects;
 	size_t count;
 
-	assert(r = xorn_new_revision(rev));
+	assert((r = xorn_new_revision(rev)));
 	assert(xorn_delete_object(r, del, NULL) == 0);
 
 	assert(xorn_get_objects(r, &objects, &count) == 0);
@@ -157,7 +157,7 @@ static void check_delete_1(xorn_revision_t rev, xorn_object_t del,
 	xorn_object_t *objects;
 	size_t count;
 
-	assert(r = xorn_new_revision(rev));
+	assert((r = xorn_new_revision(rev)));
 	assert(xorn_delete_object(r, del, NULL) == 0);
 
 	assert(xorn_get_objects(r, &objects, &count) == 0);
@@ -176,7 +176,7 @@ static void check_delete_2(xorn_revision_t rev, xorn_object_t del,
 	xorn_object_t *objects;
 	size_t count;
 
-	assert(r = xorn_new_revision(rev));
+	assert((r = xorn_new_revision(rev)));
 	assert(xorn_delete_object(r, del, NULL) == 0);
 
 	assert(xorn_get_objects(r, &objects, &count) == 0);
@@ -339,14 +339,14 @@ int main(void)
 	struct xornsch_line line_data;
 	struct xornsch_component component_data;
 
-	assert(rev = xorn_new_revision(NULL));
+	assert((rev = xorn_new_revision(NULL)));
 
 	memset(&net_data, 0, sizeof net_data);
-	assert(N = xornsch_add_net(rev, &net_data, NULL));
+	assert((N = xornsch_add_net(rev, &net_data, NULL)));
 
 	memset(&text_data, 0, sizeof text_data);
-	assert(a = xornsch_add_text(rev, &text_data, NULL));
-	assert(b = xornsch_add_text(rev, &text_data, NULL));
+	assert((a = xornsch_add_text(rev, &text_data, NULL)));
+	assert((b = xornsch_add_text(rev, &text_data, NULL)));
 
 	common_checks(rev, N, a, b, N, a, b, false, E_PNOTSIB);
 
@@ -417,7 +417,7 @@ int main(void)
 	check(rev, b, _, a, E_NOTRANS, N, a, b);
 	check(rev, b, N, _, E_NOTRANS, N, a, b);
 
-	assert(rev1 = xorn_new_revision(rev));
+	assert((rev1 = xorn_new_revision(rev)));
 
 	/* can't attach text to line */
 
