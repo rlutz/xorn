@@ -67,6 +67,7 @@ backend_PYTHON = \
 	gnet_systemc.py \
 	gnet_tango.py \
 	gnet_tedax.py \
+	gnet_tedax_bdale.py \
 	gnet_vams.py \
 	gnet_verilog.py \
 	gnet_vhdl.py \

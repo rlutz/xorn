@@ -124,6 +124,7 @@ TESTS = stack_1-geda.out \
 	common/JD-systemc.out \
 	common/JD-tango.out \
 	common/JD-tedax.out \
+	common/JD-tedax_bdale.out \
 	common/JD-vams.out \
 	common/JD-verilog.out \
 	common/JD-vhdl.out \
@@ -167,6 +168,7 @@ TESTS = stack_1-geda.out \
 	common/SlottedOpamps-systemc.out \
 	common/SlottedOpamps-tango.out \
 	common/SlottedOpamps-tedax.out \
+	common/SlottedOpamps-tedax_bdale.out \
 	common/SlottedOpamps-vams.out \
 	common/SlottedOpamps-verilog.out \
 	common/SlottedOpamps-vhdl.out \
@@ -212,6 +214,7 @@ TESTS = stack_1-geda.out \
 	common/TwoStageAmp-systemc.out \
 	common/TwoStageAmp-tango.out \
 	common/TwoStageAmp-tedax.out \
+	common/TwoStageAmp-tedax_bdale.out \
 	common/TwoStageAmp-vams.out \
 	common/TwoStageAmp-verilog.out \
 	common/TwoStageAmp-vhdl.out \
@@ -256,6 +259,7 @@ TESTS = stack_1-geda.out \
 	common/cascade-systemc.out \
 	common/cascade-tango.out \
 	common/cascade-tedax.out \
+	common/cascade-tedax_bdale.out \
 	common/cascade-vams.out \
 	common/cascade-verilog.out \
 	common/cascade-vhdl.out \
@@ -299,6 +303,7 @@ TESTS = stack_1-geda.out \
 	common/multiequal-systemc.out \
 	common/multiequal-tango.out \
 	common/multiequal-tedax.out \
+	common/multiequal-tedax_bdale.out \
 	common/multiequal-vams.out \
 	common/multiequal-verilog.out \
 	common/multiequal-vhdl.out \
@@ -342,6 +347,7 @@ TESTS = stack_1-geda.out \
 	common/netattrib-systemc.out \
 	common/netattrib-tango.out \
 	common/netattrib-tedax.out \
+	common/netattrib-tedax_bdale.out \
 	common/netattrib-vams.out \
 	common/netattrib-verilog.out \
 	common/netattrib-vhdl.out \
@@ -385,6 +391,7 @@ TESTS = stack_1-geda.out \
 	common/powersupply-systemc.out \
 	common/powersupply-tango.out \
 	common/powersupply-tedax.out \
+	common/powersupply-tedax_bdale.out \
 	common/powersupply-vams.out \
 	common/powersupply-verilog.out \
 	common/powersupply-vhdl.out \
@@ -428,6 +435,7 @@ TESTS = stack_1-geda.out \
 	common/singlenet-systemc.out \
 	common/singlenet-tango.out \
 	common/singlenet-tedax.out \
+	common/singlenet-tedax_bdale.out \
 	common/singlenet-vams.out \
 	common/singlenet-verilog.out \
 	common/singlenet-vhdl.out \
