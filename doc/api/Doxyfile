@@ -875,7 +875,7 @@ EXCLUDE_SYMBOLS        = DECLARE_OBJECT_FUNCTIONS \
 # command).
 
 EXAMPLE_PATH           = ../../tests/storage/snippets \
-                         ../../tests/cpython/snippets \
+                         ../../tests/cffi/snippets \
                          ../../tests/python/snippets
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the

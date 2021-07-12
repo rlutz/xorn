@@ -20,7 +20,7 @@
 # This file DOES NOT contain the actual source code of the xorn.storage
 # module.  It contains documented stubs of the code from which the
 # Doxygen documentation is generated.  For the actual definition of
-# the module, see the Python extension in \c src/cpython/storage/.
+# the module, see the Python extension in \c src/cffi/storage/.
 
 ## \namespace xorn.storage
 ## Xorn storage backend.

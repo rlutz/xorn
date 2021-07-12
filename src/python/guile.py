@@ -20,7 +20,7 @@
 # This file DOES NOT contain the actual source code of the xorn.guile
 # module.  It contains documented stubs of the code from which the
 # Doxygen documentation is generated.  For the actual definition of
-# the module, see the Python extension in \c src/cpython/guile/.
+# the module, see the Python extension in \c src/cffi/guile/.
 
 ## \namespace xorn.guile
 ## Embedding a Guile interpreter.

@@ -58,34 +58,34 @@ check_PROGRAMS = \
 	storage/validate
 
 pythontests = \
-	cpython/snippets/storage_funcs.py \
-	cpython/snippets/guile.py \
-	cpython/storage/copy_attached.py \
-	cpython/storage/copy_object.py \
-	cpython/storage/copy_objects.py \
-	cpython/storage/data_ctors.py \
-	cpython/storage/delete_sel.py \
-	cpython/storage/exist.py \
-	cpython/storage/get_loc_attach.py \
-	cpython/storage/get_loc_order.py \
-	cpython/storage/get_obdata.py \
-	cpython/storage/get_objects.py \
-	cpython/storage/get_obtype.py \
-	cpython/storage/is_selected.py \
-	cpython/storage/module.py \
-	cpython/storage/normalize.py \
-	cpython/storage/ob_equality.py \
-	cpython/storage/pointer.py \
-	cpython/storage/query_attached.py \
-	cpython/storage/reloc_attach.py \
-	cpython/storage/reloc_order.py \
-	cpython/storage/selection.py \
-	cpython/storage/set_obdata.py \
-	cpython/storage/stat.py \
-	cpython/storage/string.py \
-	cpython/storage/transient.py \
-	cpython/storage/validate.py \
-	cpython/guile.py \
+	cffi/snippets/storage_funcs.py \
+	cffi/snippets/guile.py \
+	cffi/storage/copy_attached.py \
+	cffi/storage/copy_object.py \
+	cffi/storage/copy_objects.py \
+	cffi/storage/data_ctors.py \
+	cffi/storage/delete_sel.py \
+	cffi/storage/exist.py \
+	cffi/storage/get_loc_attach.py \
+	cffi/storage/get_loc_order.py \
+	cffi/storage/get_obdata.py \
+	cffi/storage/get_objects.py \
+	cffi/storage/get_obtype.py \
+	cffi/storage/is_selected.py \
+	cffi/storage/module.py \
+	cffi/storage/normalize.py \
+	cffi/storage/ob_equality.py \
+	cffi/storage/pointer.py \
+	cffi/storage/query_attached.py \
+	cffi/storage/reloc_attach.py \
+	cffi/storage/reloc_order.py \
+	cffi/storage/selection.py \
+	cffi/storage/set_obdata.py \
+	cffi/storage/stat.py \
+	cffi/storage/string.py \
+	cffi/storage/transient.py \
+	cffi/storage/validate.py \
+	cffi/guile.py \
 	python/snippets/xml_writer.py \
 	python/base64.py \
 	python/fixednum.py \
@@ -121,5 +121,5 @@ TESTS = $(check_PROGRAMS) $(pythontests)
 
 EXTRA_DIST = \
 	storage/Setup.h \
-	cpython/storage/Setup.py \
+	cffi/storage/Setup.py \
 	$(pythontests) $(testdata)
