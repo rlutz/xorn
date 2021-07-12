@@ -70,19 +70,41 @@ EXTRA_DIST = include_h.m4 include_c.m4 $(m4output)
 
 BUILT_SOURCES = data.h
 
-pkgpyexec_LTLIBRARIES = storagemodule.la
-storagemodule_la_SOURCES = \
+pkgpyexec_LTLIBRARIES = storage.la
+storage_la_SOURCES = \
 	$(m4sources) \
 	module.c \
 	module.h \
 	object.c \
 	revision.c \
 	selection.c
-storagemodule_la_CPPFLAGS = -I$(top_srcdir)/include
-storagemodule_la_CFLAGS = $(PYTHON_CFLAGS) $(AM_CFLAGS) \
-			  -Wno-unused-parameter \
-			  $(Wno_cast_function_type_IF_SUPPORTED) \
-			  -fno-strict-aliasing
-storagemodule_la_LDFLAGS = -module -avoid-version \
-			   -export-symbols-regex '^initstorage$$'
-storagemodule_la_LIBADD = ../../storage/libxornstorage.la
+storage_la_CPPFLAGS = -I$(top_srcdir)/include
+storage_la_CFLAGS = $(PYTHON_CFLAGS) $(AM_CFLAGS) \
+		    -Wno-unused-parameter \
+		    -Wno-missing-field-initializers \
+		    $(Wno_cast_function_type_IF_SUPPORTED) \
+		    -fno-strict-aliasing
+storage_la_LDFLAGS = $(PYTHON_LDFLAGS) -module -avoid-version \
+		     -export-symbols-regex '^initstorage$$'
+storage_la_LIBADD = ../../storage/libxornstorage.la
+
+all-local: $(LTLIBRARIES)
+	@if test "storage$(PYTHON_EXT_SUFFIX)" != storage.so; then \
+	  rm -f ".libs/storage$(PYTHON_EXT_SUFFIX)"; \
+	  $(LN_S) storage.so \
+	          ".libs/storage$(PYTHON_EXT_SUFFIX)"; \
+	fi
+
+install-exec-local: installdirs
+	@$(NORMAL_INSTALL)
+	if test "storage$(PYTHON_EXT_SUFFIX)" != storage.so; then \
+	  rm -f "$(DESTDIR)$(pkgpyexecdir)/storage$(PYTHON_EXT_SUFFIX)"; \
+	  $(LN_S) storage.so \
+	          "$(DESTDIR)$(pkgpyexecdir)/storage$(PYTHON_EXT_SUFFIX)"; \
+	fi
+
+uninstall-local:
+	@$(NORMAL_UNINSTALL)
+	if test "storage$(PYTHON_EXT_SUFFIX)" != storage.so; then \
+	  rm -f "$(DESTDIR)$(pkgpyexecdir)/storage$(PYTHON_EXT_SUFFIX)"; \
+	fi

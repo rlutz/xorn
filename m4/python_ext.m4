@@ -2,18 +2,18 @@
 ## Python file handling
 ## From Andrew Dalke
 ## Updated by James Henstridge
+## Extended by Roland Lutz
 ## ------------------------
 # Copyright (C) 1999-2013 Free Software Foundation, Inc.
+# Copyright (C) 2020-2021 Roland Lutz
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
 
-# This is a modified version of the original python.m4 file which only
-# tries to use Python 2.x.
 
-
-# AM_PATH_PYTHON([MINIMUM-VERSION], [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+# AM_PATH_PYTHON_EXT([MINIMUM-PYTHON2-VERSION], [MINIMUM-PYTHON3-VERSION],
+#                    [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
 # ---------------------------------------------------------------------------
 # Adds support for distributing Python modules and packages.  To
 # install modules, copy them to $(pythondir), using the python_PYTHON
@@ -31,59 +31,74 @@
 # environment variable, or create a .pth file (see the python
 # documentation for details).
 #
-# If the MINIMUM-VERSION argument is passed, AM_PATH_PYTHON will
-# cause an error if the version of python installed on the system
-# doesn't meet the requirement.  MINIMUM-VERSION should consist of
+# AM_PATH_PYTHON_EXT will cause an error if the version of python
+# installed on the system doesn't meet the required
+# MINIMUM-PYTHON2-VERSION or MINIMUM-PYTHON3-VERSION, respectively,
+# with an empty string indicating that this major version of Python is
+# not supported.  The specified version strings should consist of
 # numbers and dots only.
-AC_DEFUN([AM_PATH_PYTHON],
+AC_DEFUN([AM_PATH_PYTHON_EXT],
  [
   dnl Find a Python interpreter.  Python versions prior to 2.0 are not
   dnl supported. (2.0 was released on October 16, 2000).
   m4_define_default([_AM_PYTHON_INTERPRETER_LIST],
-[python2 python2.7 dnl
- python2.6 python2.5 python2.4 python2.3 python2.2 python2.1 python2.0])
+[pypy pypy2 pypy3 dnl
+ pypy3.9 pypy3.8 pypy3.7 pypy3.6 pypy3.5 pypy3.4 pypy3.3 dnl
+ pypy3.2 pypy3.1 pypy3.0 dnl
+ pypy2.7 pypy2.6 pypy2.5 pypy2.4 pypy2.3 pypy2.2 pypy2.1 dnl
+ pypy2.0 dnl
+ python python2 python3 dnl
+ python3.9 python3.8 python3.7 python3.6 python3.5 python3.4 python3.3 dnl
+ python3.2 python3.1 python3.0 dnl
+ python2.7 python2.6 python2.5 python2.4 python2.3 python2.2 python2.1 dnl
+ python2.0])
+
+  if test -z "$2"; then
+    if test -z "$1"; then
+      AC_MSG_ERROR([no minimum Python version specified])
+    else
+      am_cv_display_python_version="$1"
+    fi
+  else
+    if test -z "$1"; then
+      am_cv_display_python_version="$2"
+    else
+      am_cv_display_python_version="$1 or $2"
+    fi
+  fi
 
   AC_ARG_VAR([PYTHON], [the Python interpreter])
 
-  m4_if([$1],[],[
-    dnl No version check is needed.
-    # Find any Python interpreter.
-    if test -z "$PYTHON"; then
-      AC_PATH_PROGS([PYTHON], _AM_PYTHON_INTERPRETER_LIST, :)
-    fi
-    am_display_PYTHON=python
-  ], [
-    dnl A version check is needed.
-    if test -n "$PYTHON"; then
-      # If the user set $PYTHON, use it and don't search something else.
-      AC_MSG_CHECKING([whether $PYTHON version is >= $1])
-      AM_PYTHON_CHECK_VERSION([$PYTHON], [$1],
-			      [AC_MSG_RESULT([yes])],
-			      [AC_MSG_RESULT([no])
-			       AC_MSG_ERROR([Python interpreter is too old])])
-      am_display_PYTHON=$PYTHON
+  if test -n "$PYTHON"; then
+    # If the user set $PYTHON, use it and don't search something else.
+    AC_MSG_CHECKING([whether $PYTHON version is >= $am_cv_display_python_version])
+    AM_PYTHON_CHECK_VERSION_EXT([$PYTHON], [$1], [$2],
+				[AC_MSG_RESULT([yes])],
+				[AC_MSG_RESULT([no])
+	AC_MSG_ERROR([Python interpreter doesn't match required version])])
+    am_display_PYTHON=$PYTHON
+  else
+    # Otherwise, try each interpreter until we find one that satisfies
+    # VERSION.
+    AC_CACHE_CHECK([for a Python interpreter with version >= $am_cv_display_python_version],
+      [am_cv_pathless_PYTHON],[
+      for am_cv_pathless_PYTHON in _AM_PYTHON_INTERPRETER_LIST none; do
+	test "$am_cv_pathless_PYTHON" = none && break
+	AM_PYTHON_CHECK_VERSION_EXT([$am_cv_pathless_PYTHON], [$1], [$2],
+				    [break])
+      done])
+    # Set $PYTHON to the absolute path of $am_cv_pathless_PYTHON.
+    if test "$am_cv_pathless_PYTHON" = none; then
+      PYTHON=:
     else
-      # Otherwise, try each interpreter until we find one that satisfies
-      # VERSION.
-      AC_CACHE_CHECK([for a Python interpreter with version >= $1],
-	[am_cv_pathless_PYTHON],[
-	for am_cv_pathless_PYTHON in _AM_PYTHON_INTERPRETER_LIST none; do
-	  test "$am_cv_pathless_PYTHON" = none && break
-	  AM_PYTHON_CHECK_VERSION([$am_cv_pathless_PYTHON], [$1], [break])
-	done])
-      # Set $PYTHON to the absolute path of $am_cv_pathless_PYTHON.
-      if test "$am_cv_pathless_PYTHON" = none; then
-	PYTHON=:
-      else
-        AC_PATH_PROG([PYTHON], [$am_cv_pathless_PYTHON])
-      fi
-      am_display_PYTHON=$am_cv_pathless_PYTHON
+      AC_PATH_PROG([PYTHON], [$am_cv_pathless_PYTHON])
     fi
-  ])
+    am_display_PYTHON=$am_cv_pathless_PYTHON
+  fi
 
   if test "$PYTHON" = :; then
   dnl Run any user-specified action, or abort.
-    m4_default([$3], [AC_MSG_ERROR([no suitable Python interpreter found])])
+    m4_default([$4], [AC_MSG_ERROR([no suitable Python interpreter found])])
   else
 
   dnl Query Python for its version number.  Getting [:3] seems to be
@@ -215,28 +230,90 @@ sys.stdout.write(sitedir)"`
 
   AC_SUBST([pkgpyexecdir], [\${pyexecdir}/$PACKAGE])
 
+  dnl PYTHON_EXT_SUFFIX
+
+  AC_CACHE_CHECK([for $am_display_PYTHON extension module suffix],
+    [am_cv_python_ext_suffix],
+    [am_cv_python_ext_suffix=`$PYTHON -c "
+import sys, sysconfig
+ext = sysconfig.get_config_var('EXT_SUFFIX')
+if ext is None:
+    ext = sysconfig.get_config_var('SO')
+sys.stdout.write(ext)"`])
+  AC_SUBST([PYTHON_EXT_SUFFIX], [$am_cv_python_ext_suffix])
+  if test "x$am_cv_python_ext_suffix" = x; then
+    AC_MSG_ERROR([unable to determine $am_display_PYTHON extension module suffix])
+  fi
+
+  dnl PYTHON_CFLAGS
+
+  AC_CACHE_CHECK([for $am_display_PYTHON extension module include directory],
+    [am_cv_python_includedir],
+    [am_cv_python_includedir=`$PYTHON -c "
+import sys, sysconfig
+sys.stdout.write(sysconfig.get_config_var('INCLUDEPY'))"`])
+  if test "x$am_cv_python_includedir" = x; then
+    AC_MSG_ERROR([unable to determine $am_display_PYTHON extension module include directory])
+  fi
+  AC_CACHE_CHECK([for $am_display_PYTHON extension module compiler options],
+    [am_cv_python_partial_cflags],
+    [am_cv_python_partial_cflags=`$PYTHON -c "
+import sys
+from distutils.ccompiler import new_compiler
+from distutils.sysconfig import customize_compiler
+c = new_compiler()
+customize_compiler(c)
+sys.stdout.write(' '.join(c.compiler_so[[1:]]))"`])
+  if test "x$am_cv_python_partial_cflags" = x; then
+    AC_MSG_ERROR([unable to determine $am_display_PYTHON extension module compiler options])
+  fi
+  am_cv_python_cflags="-I$am_cv_python_includedir $am_cv_python_partial_cflags"
+  AC_SUBST([PYTHON_CFLAGS], [$am_cv_python_cflags])
+
+  dnl PYTHON_LDFLAGS
+
+  AC_CACHE_CHECK([for $am_display_PYTHON extension module linker options],
+    [am_cv_python_ldflags],
+    [am_cv_python_ldflags=`$PYTHON -c "
+import sys
+from distutils.ccompiler import new_compiler
+from distutils.sysconfig import customize_compiler
+c = new_compiler()
+customize_compiler(c)
+sys.stdout.write(' '.join(c.linker_so[[1:]]))"`])
+  AC_SUBST([PYTHON_LDFLAGS], [$am_cv_python_ldflags])
+  if test "x$am_cv_python_ldflags" = x; then
+    AC_MSG_ERROR([unable to determine $am_display_PYTHON extension module linker options])
+  fi
+
   dnl Run any user-specified action.
-  $2
+  $3
   fi
 
 ])
 
 
-# AM_PYTHON_CHECK_VERSION(PROG, VERSION, [ACTION-IF-TRUE], [ACTION-IF-FALSE])
+# AM_PYTHON_CHECK_VERSION_EXT([PROG], [MIN-PY2-VERSION], [MIN-PY3-VERSION],
+#                             [ACTION-IF-TRUE], [ACTION-IF-FALSE])
 # ---------------------------------------------------------------------------
-# Run ACTION-IF-TRUE if the Python interpreter PROG has version >= VERSION.
+# Run ACTION-IF-TRUE if the Python interpreter PROG has Python 2 version >=
+# MIN_PY2_VERSION or Python 3 version >= MIN_PY3_VERSION.
 # Run ACTION-IF-FALSE otherwise.
 # This test uses sys.hexversion instead of the string equivalent (first
 # word of sys.version), in order to cope with versions such as 2.2c1.
 # This supports Python 2.0 or higher. (2.0 was released on October 16, 2000).
-AC_DEFUN([AM_PYTHON_CHECK_VERSION],
+AC_DEFUN([AM_PYTHON_CHECK_VERSION_EXT],
  [prog="import sys
-# split strings by '.' and convert to numeric.  Append some zeros
-# because we need at least 4 digits for the hex conversion.
-# map returns an iterator in Python 3.0 and a list in 2.x
-minver = list(map(int, '$2'.split('.'))) + [[0, 0, 0]]
-minverhex = 0
-# xrange is not present in Python 3.0 and range returns an iterator
-for i in list(range(0, 4)): minverhex = (minverhex << 8) + minver[[i]]
-sys.exit(sys.hexversion < minverhex)"
-  AS_IF([AM_RUN_LOG([$1 -c "$prog"])], [$3], [$4])])
+for minver_str in [['$2', '$3']]:
+  if not minver_str: continue
+  # split strings by '.' and convert to numeric.  Append some zeros
+  # because we need at least 4 digits for the hex conversion.
+  # map returns an iterator in Python 3.0 and a list in 2.x
+  minver = list(map(int, minver_str.split('.'))) + [[0, 0, 0]]
+  minverhex = 0
+  # xrange is not present in Python 3.0 and range returns an iterator
+  for i in list(range(0, 4)): minverhex = (minverhex << 8) + minver[[i]]
+  if sys.hexversion >> 24 == minverhex >> 24 and sys.hexversion >= minverhex:
+    sys.exit(0)
+sys.exit(1)"
+  AS_IF([AM_RUN_LOG([$1 -c "$prog"])], [$4], [$5])])

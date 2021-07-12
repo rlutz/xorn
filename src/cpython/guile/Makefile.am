@@ -16,17 +16,39 @@
 
 AM_CFLAGS = -Wall -Wextra
 
-pkgpyexec_LTLIBRARIES = guilemodule.la
-guilemodule_la_SOURCES = \
+pkgpyexec_LTLIBRARIES = guile.la
+guile_la_SOURCES = \
 	module.c \
 	module.h \
 	proc.c \
 	py2scm.c \
 	scm2py.c
-guilemodule_la_CFLAGS = $(PYTHON_CFLAGS) $(GUILE_CFLAGS) $(AM_CFLAGS) \
-			-Wno-unused-parameter \
-			$(Wno_cast_function_type_IF_SUPPORTED) \
-			-fno-strict-aliasing
-guilemodule_la_LDFLAGS = -module -avoid-version \
-			 -export-symbols-regex '^initguile$$'
-guilemodule_la_LIBADD = $(GUILE_LIBS)
+guile_la_CFLAGS = $(PYTHON_CFLAGS) $(GUILE_CFLAGS) $(AM_CFLAGS) \
+		  -Wno-unused-parameter \
+		  -Wno-missing-field-initializers \
+		  $(Wno_cast_function_type_IF_SUPPORTED) \
+		  -fno-strict-aliasing
+guile_la_LDFLAGS = $(PYTHON_LDFLAGS) -module -avoid-version \
+		   -export-symbols-regex '^initguile$$'
+guile_la_LIBADD = $(GUILE_LIBS)
+
+all-local: $(LTLIBRARIES)
+	@if test "guile$(PYTHON_EXT_SUFFIX)" != guile.so; then \
+	  rm -f ".libs/guile$(PYTHON_EXT_SUFFIX)"; \
+	  $(LN_S) guile.so \
+	          ".libs/guile$(PYTHON_EXT_SUFFIX)"; \
+	fi
+
+install-exec-local: installdirs
+	@$(NORMAL_INSTALL)
+	if test "guile$(PYTHON_EXT_SUFFIX)" != guile.so; then \
+	  rm -f "$(DESTDIR)$(pkgpyexecdir)/guile$(PYTHON_EXT_SUFFIX)"; \
+	  $(LN_S) guile.so \
+	          "$(DESTDIR)$(pkgpyexecdir)/guile$(PYTHON_EXT_SUFFIX)"; \
+	fi
+
+uninstall-local:
+	@$(NORMAL_UNINSTALL)
+	if test "guile$(PYTHON_EXT_SUFFIX)" != guile.so; then \
+	  rm -f "$(DESTDIR)$(pkgpyexecdir)/guile$(PYTHON_EXT_SUFFIX)"; \
+	fi

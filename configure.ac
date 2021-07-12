@@ -30,10 +30,7 @@ AX_PROG_CC_WARNING([cast_function_type], [cast-function-type])
 
 AC_PROG_CXX
 
-AM_PATH_PYTHON([2.7])
-PKG_CHECK_MODULES([PYTHON], [python-2.7 >= 2.7],, [
-  PKG_CHECK_MODULES([PYTHON], [python2 >= 2.7])
-])
+AM_PATH_PYTHON_EXT([2.7], [])
 PKG_CHECK_MODULES([GUILE], [guile-2.2 >= 2.2.4])
 
 AM_GNU_GETTEXT([external])
