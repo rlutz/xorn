@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!@PYTHON@
 # Copyright (C) 2013-2021 Roland Lutz
 #
 # This program is free software; you can redistribute it and/or modify

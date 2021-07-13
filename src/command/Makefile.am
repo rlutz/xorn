@@ -20,6 +20,7 @@ EXTRA_DIST = xorn.in gnetlist.in
 
 xorn: $(srcdir)/xorn.in Makefile
 	$(AM_V_GEN)sed \
+	    -e 's,[@]PYTHON[@],$(PYTHON),g' \
 	    -e 's,[@]pyexecdir[@],$(abs_top_builddir)/built-packages,g' \
 	    -e 's,[@]commanddir[@],$(abs_srcdir),g' \
 		$(srcdir)/$@.in > $@; \
@@ -27,12 +28,14 @@ xorn: $(srcdir)/xorn.in Makefile
 
 xornT: $(srcdir)/xorn.in Makefile
 	$(AM_V_GEN)sed \
+	    -e 's,[@]PYTHON[@],$(PYTHON),g' \
 	    -e 's,[@]pyexecdir[@],$(pyexecdir),g' \
 	    -e 's,[@]commanddir[@],$(commanddir),g' \
 		$(srcdir)/xorn.in > $@
 
 gnetlist: $(srcdir)/gnetlist.in Makefile
 	$(AM_V_GEN)sed \
+	    -e 's,[@]PYTHON[@],$(PYTHON),g' \
 	    -e 's,[@]pyexecdir[@],$(abs_top_builddir)/built-packages,g' \
 	    -e 's,[@]XORN[@],$(abs_builddir)/xorn,g' \
 	    -e 's,[@]gedadatadir[@],$(gedadatadir),g' \
@@ -43,6 +46,7 @@ gnetlist: $(srcdir)/gnetlist.in Makefile
 
 gnetlistT: $(srcdir)/gnetlist.in Makefile
 	$(AM_V_GEN)sed \
+	    -e 's,[@]PYTHON[@],$(PYTHON),g' \
 	    -e 's,[@]pyexecdir[@],$(pyexecdir),g' \
 	    -e 's,[@]XORN[@],$(bindir)/xorn,g' \
 	    -e 's,[@]gedadatadir[@],$(gedadatadir),g' \
