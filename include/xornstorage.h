@@ -109,7 +109,7 @@ int xorn_get_modified_objects(
 
 /* selection functions */
 
-xorn_selection_t xorn_select_none();
+xorn_selection_t xorn_select_none(void);
 xorn_selection_t xorn_select_object(
 	xorn_object_t ob);
 xorn_selection_t xorn_select_attached_to(
