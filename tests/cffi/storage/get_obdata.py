@@ -32,30 +32,30 @@ assert_cannot_get(rev0, ob1b)
 
 data = rev1.get_object_data(ob0)
 assert data is not None
-assert data != Setup.line_data
+assert data is not Setup.line_data
 assert type(data) == type(Setup.line_data)
 assert_cannot_get(rev1, ob1a)
 assert_cannot_get(rev1, ob1b)
 
 data = rev2.get_object_data(ob0)
 assert data is not None
-assert data != Setup.line_data
+assert data is not Setup.line_data
 assert type(data) == type(Setup.line_data)
 data = rev2.get_object_data(ob1a)
 assert data is not None
-assert data != Setup.box_data
+assert data is not Setup.box_data
 assert type(data) == type(Setup.box_data)
 data = rev2.get_object_data(ob1b)
 assert data is not None
-assert data != Setup.circle_data
+assert data is not Setup.circle_data
 assert type(data) == type(Setup.circle_data)
 
 data = rev3.get_object_data(ob0)
 assert data is not None
-assert data != Setup.net_data
+assert data is not Setup.net_data
 assert type(data) == type(Setup.net_data)
 assert_cannot_get(rev3, ob1a)
 data = rev3.get_object_data(ob1b)
 assert data is not None
-assert data != Setup.circle_data
+assert data is not Setup.circle_data
 assert type(data) == type(Setup.circle_data)

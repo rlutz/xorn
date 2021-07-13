@@ -36,24 +36,24 @@ mod_attrs = {
     'LineAttr': type,
     'FillAttr': type,
 
-    'get_objects_attached_to': types.BuiltinMethodType,
-    'get_selected_objects': types.BuiltinMethodType,
-    'get_added_objects': types.BuiltinMethodType,
-    'get_removed_objects': types.BuiltinMethodType,
-    'get_modified_objects': types.BuiltinMethodType,
+    'get_objects_attached_to': types.FunctionType,
+    'get_selected_objects': types.FunctionType,
+    'get_added_objects': types.FunctionType,
+    'get_removed_objects': types.FunctionType,
+    'get_modified_objects': types.FunctionType,
 
-    'select_none': types.BuiltinMethodType,
-    'select_object': types.BuiltinMethodType,
-    'select_attached_to': types.BuiltinMethodType,
-    'select_all': types.BuiltinMethodType,
-    'select_all_except': types.BuiltinMethodType,
-    'select_including': types.BuiltinMethodType,
-    'select_excluding': types.BuiltinMethodType,
-    'select_union': types.BuiltinMethodType,
-    'select_intersection': types.BuiltinMethodType,
-    'select_difference': types.BuiltinMethodType,
-    'selection_is_empty': types.BuiltinMethodType,
-    'object_is_selected': types.BuiltinMethodType,
+    'select_none': types.FunctionType,
+    'select_object': types.FunctionType,
+    'select_attached_to': types.FunctionType,
+    'select_all': types.FunctionType,
+    'select_all_except': types.FunctionType,
+    'select_including': types.FunctionType,
+    'select_excluding': types.FunctionType,
+    'select_union': types.FunctionType,
+    'select_intersection': types.FunctionType,
+    'select_difference': types.FunctionType,
+    'selection_is_empty': types.FunctionType,
+    'object_is_selected': types.FunctionType,
 }
 
 a = mod_attrs.keys()
@@ -77,22 +77,22 @@ def assert_attributes(ob, attrs):
         assert type(ob.__getattribute__(attr)) == attrs[attr]
 
 assert_attributes(xorn.storage.Revision(), {
-        'is_transient': types.BuiltinMethodType,
-        'finalize': types.BuiltinMethodType,
+        'is_transient': types.MethodType,
+        'finalize': types.MethodType,
         'transient': bool,
 
-        'get_objects': types.BuiltinMethodType,
-        'object_exists': types.BuiltinMethodType,
-        'get_object_data': types.BuiltinMethodType,
-        'get_object_location': types.BuiltinMethodType,
+        'get_objects': types.MethodType,
+        'object_exists': types.MethodType,
+        'get_object_data': types.MethodType,
+        'get_object_location': types.MethodType,
 
-        'add_object': types.BuiltinMethodType,
-        'set_object_data': types.BuiltinMethodType,
-        'relocate_object': types.BuiltinMethodType,
-        'copy_object': types.BuiltinMethodType,
-        'copy_objects': types.BuiltinMethodType,
-        'delete_object': types.BuiltinMethodType,
-        'delete_objects': types.BuiltinMethodType,
+        'add_object': types.MethodType,
+        'set_object_data': types.MethodType,
+        'relocate_object': types.MethodType,
+        'copy_object': types.MethodType,
+        'copy_objects': types.MethodType,
+        'delete_object': types.MethodType,
+        'delete_objects': types.MethodType,
 })
 
 assert_attributes(xorn.storage.Arc(), {

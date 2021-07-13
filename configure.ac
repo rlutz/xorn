@@ -19,7 +19,7 @@ AC_PREREQ([2.69])
 LT_PREREQ([2.4.6])
 
 AC_INIT([Xorn], [0.0], [bug-xorn@hedmen.org], [], [http://hedmen.org/xorn/])
-AC_CONFIG_SRCDIR([src/cffi/storage/module.c])
+AC_CONFIG_SRCDIR([src/cffi/storage/gen_ext.py])
 AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE([-Wall -Werror silent-rules subdir-objects])

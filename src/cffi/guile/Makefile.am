@@ -16,39 +16,40 @@
 
 AM_CFLAGS = -Wall -Wextra
 
-pkgpyexec_LTLIBRARIES = guile.la
-guile_la_SOURCES = \
-	module.c \
-	module.h \
-	proc.c \
-	py2scm.c \
-	scm2py.c
-guile_la_CFLAGS = $(PYTHON_CFLAGS) $(GUILE_CFLAGS) $(AM_CFLAGS) \
-		  -Wno-unused-parameter \
-		  -Wno-missing-field-initializers \
-		  $(Wno_cast_function_type_IF_SUPPORTED) \
-		  -fno-strict-aliasing
-guile_la_LDFLAGS = $(PYTHON_LDFLAGS) -module -avoid-version \
-		   -export-symbols-regex '^initguile$$'
-guile_la_LIBADD = $(GUILE_LIBS)
+pkgpyexec_LTLIBRARIES = _guile.la
+_guile_la_SOURCES = _guile.c
+_guile_la_CFLAGS = $(PYTHON_CFLAGS) $(GUILE_CFLAGS) $(AM_CFLAGS) \
+		   -Wno-missing-field-initializers
+_guile_la_LDFLAGS = $(PYTHON_LDFLAGS) -module -avoid-version
+_guile_la_LIBADD = $(GUILE_LIBS)
+
+${srcdir}/_guile.c: gen_ext.py cdef.h
+	$(AM_V_GEN)$(PYTHON) $^ tmp-$$$$ >/dev/null && mv tmp-$$$$ $@
 
 all-local: $(LTLIBRARIES)
-	@if test "guile$(PYTHON_EXT_SUFFIX)" != guile.so; then \
-	  rm -f ".libs/guile$(PYTHON_EXT_SUFFIX)"; \
-	  $(LN_S) guile.so \
-	          ".libs/guile$(PYTHON_EXT_SUFFIX)"; \
+	@if test "_guile$(PYTHON_EXT_SUFFIX)" != _guile.so; then \
+	  rm -f ".libs/_guile$(PYTHON_EXT_SUFFIX)"; \
+	  $(LN_S) _guile.so \
+	          ".libs/_guile$(PYTHON_EXT_SUFFIX)"; \
 	fi
 
 install-exec-local: installdirs
 	@$(NORMAL_INSTALL)
-	if test "guile$(PYTHON_EXT_SUFFIX)" != guile.so; then \
-	  rm -f "$(DESTDIR)$(pkgpyexecdir)/guile$(PYTHON_EXT_SUFFIX)"; \
-	  $(LN_S) guile.so \
-	          "$(DESTDIR)$(pkgpyexecdir)/guile$(PYTHON_EXT_SUFFIX)"; \
+	if test "_guile$(PYTHON_EXT_SUFFIX)" != _guile.so; then \
+	  rm -f "$(DESTDIR)$(pkgpyexecdir)/_guile$(PYTHON_EXT_SUFFIX)"; \
+	  $(LN_S) _guile.so \
+	          "$(DESTDIR)$(pkgpyexecdir)/_guile$(PYTHON_EXT_SUFFIX)"; \
 	fi
 
 uninstall-local:
 	@$(NORMAL_UNINSTALL)
-	if test "guile$(PYTHON_EXT_SUFFIX)" != guile.so; then \
-	  rm -f "$(DESTDIR)$(pkgpyexecdir)/guile$(PYTHON_EXT_SUFFIX)"; \
+	if test "_guile$(PYTHON_EXT_SUFFIX)" != _guile.so; then \
+	  rm -f "$(DESTDIR)$(pkgpyexecdir)/_guile$(PYTHON_EXT_SUFFIX)"; \
 	fi
+
+clean-local:
+	rm -f tmp-*
+
+EXTRA_DIST = gen_ext.py cdef.h
+
+MAINTAINERCLEAN_FILES = _guile.c

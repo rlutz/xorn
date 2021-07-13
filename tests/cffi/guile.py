@@ -25,7 +25,7 @@ def throws(fun, *args, **kwds):
 
 # converting objects to and from Guile
 
-assert throws(xorn.guile.define, 'foo', object()) == xorn.guile.GuileError
+assert throws(xorn.guile.define, 'foo', object()) == TypeError
 assert throws(xorn.guile.define, 'foo', 0) == None
 
 assert throws(xorn.guile.lookup, 'foo') == None
@@ -47,7 +47,7 @@ for value in [None, False, True, 1, 1., 'foo', u'fo\xf6', (), (0, 1, 'foo')]:
             assert type(returned) == type(value)
 
 assert throws(xorn.guile.eval_string, "'(0 . ())") == None
-assert throws(xorn.guile.eval_string, "'(0 . 1)") == xorn.guile.GuileError
+assert throws(xorn.guile.eval_string, "'(0 . 1)") == TypeError
 
 # calling Guile functions from Python
 
@@ -57,14 +57,14 @@ assert type(p) == xorn.guile.Procedure
 assert repr(p) == '<Guile procedure - (#:optional _ _ . _)>'
 assert p(13, 8) == 5
 assert throws(p) == xorn.guile.GuileError
-assert throws(p, foo = None) == ValueError
+assert throws(p, foo = None) == TypeError
 assert p != xorn.guile.lookup('+')
 assert p == xorn.guile.lookup('-')
 assert p == xorn.guile.eval_string('-')
 
 xorn.guile.define('foo', p)
 assert xorn.guile.eval_string('(simple-format #f "~S" foo)') \
-    == '#<procedure - (#:optional _ _ . _)>'
+    == u'#<procedure - (#:optional _ _ . _)>'
 
 # calling Python functions from Guile, argument count
 
@@ -114,7 +114,7 @@ assert xorn.guile.eval_string('''
          raise-exception
          (lambda (key . args)
            (cons (symbol->string key) args)))
-''') == ('python-exception', 'exceptions.Exception', False)
+''') == (u'python-exception', u'Exception')
 
 # running Guile script files
 

@@ -16,95 +16,41 @@
 
 AM_CFLAGS = -Wall -Wextra
 
-AM_V_M4 = $(am__v_M4_@AM_V@)
-am__v_M4_ = $(am__v_M4_@AM_DEFAULT_V@)
-am__v_M4_0 = @echo "  M4      " $@;
-am__v_M4_1 =
+pkgpyexec_LTLIBRARIES = _storage.la
+_storage_la_SOURCES = _storage.c
+_storage_la_CPPFLAGS = -I$(top_srcdir)/include
+_storage_la_CFLAGS = $(PYTHON_CFLAGS) $(AM_CFLAGS) \
+		     -Wno-missing-field-initializers
+_storage_la_LDFLAGS = $(PYTHON_LDFLAGS) -module -avoid-version
+_storage_la_LIBADD = ../../storage/libxornstorage.la
 
-m4sources = \
-	data_arc.m4 \
-	data_box.m4 \
-	data_circle.m4 \
-	data_component.m4 \
-	data_line.m4 \
-	data_net.m4 \
-	data_path.m4 \
-	data_picture.m4 \
-	data_text.m4 \
-	data_lineattr.m4 \
-	data_fillattr.m4
-
-m4output = \
-	data.h \
-	data_arc.c \
-	data_box.c \
-	data_circle.c \
-	data_component.c \
-	data_line.c \
-	data_net.c \
-	data_path.c \
-	data_picture.c \
-	data_text.c \
-	data_lineattr.c \
-	data_fillattr.c
-
-data.h: include_h.m4 $(m4sources)
-	$(AM_V_M4)cd "$(srcdir)" && m4 -P include_h.m4 $(m4sources) > data.h
-
-.m4.c:
-	$(AM_V_M4)m4 -P $(srcdir)/include_c.m4 $< > $@
-
-data_arc.c: include_c.m4
-data_box.c: include_c.m4
-data_circle.c: include_c.m4
-data_component.c: include_c.m4
-data_line.c: include_c.m4
-data_net.c: include_c.m4
-data_path.c: include_c.m4
-data_picture.c: include_c.m4
-data_text.c: include_c.m4
-data_lineattr.c: include_c.m4
-data_fillattr.c: include_c.m4
-
-EXTRA_DIST = include_h.m4 include_c.m4 $(m4output)
-
-BUILT_SOURCES = data.h
-
-pkgpyexec_LTLIBRARIES = storage.la
-storage_la_SOURCES = \
-	$(m4sources) \
-	module.c \
-	module.h \
-	object.c \
-	revision.c \
-	selection.c
-storage_la_CPPFLAGS = -I$(top_srcdir)/include
-storage_la_CFLAGS = $(PYTHON_CFLAGS) $(AM_CFLAGS) \
-		    -Wno-unused-parameter \
-		    -Wno-missing-field-initializers \
-		    $(Wno_cast_function_type_IF_SUPPORTED) \
-		    -fno-strict-aliasing
-storage_la_LDFLAGS = $(PYTHON_LDFLAGS) -module -avoid-version \
-		     -export-symbols-regex '^initstorage$$'
-storage_la_LIBADD = ../../storage/libxornstorage.la
+${srcdir}/_storage.c: gen_ext.py cdef.h
+	$(AM_V_GEN)$(PYTHON) $^ tmp-$$$$ >/dev/null && mv tmp-$$$$ $@
 
 all-local: $(LTLIBRARIES)
-	@if test "storage$(PYTHON_EXT_SUFFIX)" != storage.so; then \
-	  rm -f ".libs/storage$(PYTHON_EXT_SUFFIX)"; \
-	  $(LN_S) storage.so \
-	          ".libs/storage$(PYTHON_EXT_SUFFIX)"; \
+	@if test "_storage$(PYTHON_EXT_SUFFIX)" != _storage.so; then \
+	  rm -f ".libs/_storage$(PYTHON_EXT_SUFFIX)"; \
+	  $(LN_S) _storage.so \
+	          ".libs/_storage$(PYTHON_EXT_SUFFIX)"; \
 	fi
 
 install-exec-local: installdirs
 	@$(NORMAL_INSTALL)
-	if test "storage$(PYTHON_EXT_SUFFIX)" != storage.so; then \
-	  rm -f "$(DESTDIR)$(pkgpyexecdir)/storage$(PYTHON_EXT_SUFFIX)"; \
-	  $(LN_S) storage.so \
-	          "$(DESTDIR)$(pkgpyexecdir)/storage$(PYTHON_EXT_SUFFIX)"; \
+	if test "_storage$(PYTHON_EXT_SUFFIX)" != _storage.so; then \
+	  rm -f "$(DESTDIR)$(pkgpyexecdir)/_storage$(PYTHON_EXT_SUFFIX)"; \
+	  $(LN_S) _storage.so \
+	          "$(DESTDIR)$(pkgpyexecdir)/_storage$(PYTHON_EXT_SUFFIX)"; \
 	fi
 
 uninstall-local:
 	@$(NORMAL_UNINSTALL)
-	if test "storage$(PYTHON_EXT_SUFFIX)" != storage.so; then \
-	  rm -f "$(DESTDIR)$(pkgpyexecdir)/storage$(PYTHON_EXT_SUFFIX)"; \
+	if test "_storage$(PYTHON_EXT_SUFFIX)" != _storage.so; then \
+	  rm -f "$(DESTDIR)$(pkgpyexecdir)/_storage$(PYTHON_EXT_SUFFIX)"; \
 	fi
+
+clean-local:
+	rm -f tmp-*
+
+EXTRA_DIST = gen_ext.py cdef.h
+
+MAINTAINERCLEAN_FILES = _storage.c

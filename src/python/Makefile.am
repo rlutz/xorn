@@ -27,8 +27,10 @@ nobase_pkgpyexec_PYTHON = \
 	command.py \
 	fileutils.py \
 	fixednum.py \
+	guile.py \
 	hybridnum.py \
 	proxy.py \
+	storage.py \
 	xml_writer.py
 
 noinst_PYTHON = guile.py storage.py
