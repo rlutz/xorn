@@ -14,9 +14,7 @@
 # along with this program; if not, write to the Free Software Foundation,
 # Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-AM_CPPFLAGS = $(PYTHON_CFLAGS) $(GUILE_CFLAGS)
-AM_CFLAGS = -Wall -W -Wno-unused-parameter -fno-strict-aliasing \
-	    $(Wno_cast_function_type_IF_SUPPORTED)
+AM_CFLAGS = -Wall -Wextra
 
 pkgpyexec_LTLIBRARIES = guilemodule.la
 guilemodule_la_SOURCES = \
@@ -25,6 +23,10 @@ guilemodule_la_SOURCES = \
 	proc.c \
 	py2scm.c \
 	scm2py.c
+guilemodule_la_CFLAGS = $(PYTHON_CFLAGS) $(GUILE_CFLAGS) $(AM_CFLAGS) \
+			-Wno-unused-parameter \
+			$(Wno_cast_function_type_IF_SUPPORTED) \
+			-fno-strict-aliasing
 guilemodule_la_LDFLAGS = -module -avoid-version \
-			 -export-symbols-regex '^initguile$$' \
-			 $(GUILE_LIBS)
+			 -export-symbols-regex '^initguile$$'
+guilemodule_la_LIBADD = $(GUILE_LIBS)

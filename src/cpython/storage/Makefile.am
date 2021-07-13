@@ -14,9 +14,7 @@
 # along with this program; if not, write to the Free Software Foundation,
 # Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-AM_CPPFLAGS = $(PYTHON_CFLAGS) -I$(top_srcdir)/include
-AM_CFLAGS = -Wall -W -Wno-unused-parameter -fno-strict-aliasing \
-	    $(Wno_cast_function_type_IF_SUPPORTED)
+AM_CFLAGS = -Wall -Wextra
 
 AM_V_M4 = $(am__v_M4_@AM_V@)
 am__v_M4_ = $(am__v_M4_@AM_DEFAULT_V@)
@@ -80,6 +78,11 @@ storagemodule_la_SOURCES = \
 	object.c \
 	revision.c \
 	selection.c
-storagemodule_la_LIBADD = ../../storage/libxornstorage.la
+storagemodule_la_CPPFLAGS = -I$(top_srcdir)/include
+storagemodule_la_CFLAGS = $(PYTHON_CFLAGS) $(AM_CFLAGS) \
+			  -Wno-unused-parameter \
+			  $(Wno_cast_function_type_IF_SUPPORTED) \
+			  -fno-strict-aliasing
 storagemodule_la_LDFLAGS = -module -avoid-version \
 			   -export-symbols-regex '^initstorage$$'
+storagemodule_la_LIBADD = ../../storage/libxornstorage.la
