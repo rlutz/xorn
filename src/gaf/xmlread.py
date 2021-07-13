@@ -696,10 +696,16 @@ def read_xml_file(f, log, namespace, start_root_element):
         log.lineno = p.CurrentLineNumber - 1
         stack[-1].character_data(data)
 
+    def XmlDeclHandler(version, encoding, standalone):
+        pass
+
     def StartDoctypeDeclHandler(doctype_name, system_id, public_id,
                                 has_internal_subset):
         log.lineno = p.CurrentLineNumber - 1
         log.error(_("unexpected XML document type declaration"))
+
+    def EndDoctypeDeclHandler():
+        pass
 
     def ElementDeclHandler(name, model):
         log.lineno = p.CurrentLineNumber - 1
@@ -714,7 +720,7 @@ def read_xml_file(f, log, namespace, start_root_element):
         log.error(_("unexpected XML processing instruction"))
 
     def UnparsedEntityDeclHandler(entity_name, base, system_id, public_id,
-                                  notationName):
+                                  notation_name):
         log.lineno = p.CurrentLineNumber - 1
         log.error(_("unexpected XML unparsed entity declaration"))
 
@@ -727,27 +733,42 @@ def read_xml_file(f, log, namespace, start_root_element):
         log.lineno = p.CurrentLineNumber - 1
         log.error(_("unexpected XML notation declaration"))
 
+    def StartNamespaceDeclHandler(prefix, uri):
+        pass
+
+    def EndNamespaceDeclHandler(prefix):
+        pass
+
+    def CommentHandler(data):
+        pass
+
     def StartCdataSectionHandler():
         log.lineno = p.CurrentLineNumber - 1
         log.error(_("unexpected XML CDATA section"))
+
+    def EndCdataSectionHandler():
+        pass
 
     def DefaultHandler(data):
         log.lineno = p.CurrentLineNumber - 1
         log.error(_("unexpected characters in XML document"))
 
+    def DefaultHandlerExpand(data):
+        pass
+
     def NotStandaloneHandler():
         log.lineno = p.CurrentLineNumber - 1
         log.error(_("XML document hasn't been declared as standalone"))
 
-    def ExternalEntityRefHandler(context, base, systemId, publicId):
+    def ExternalEntityRefHandler(context, base, system_id, public_id):
         log.lineno = p.CurrentLineNumber - 1
         log.error(_("unexpected reference to external XML entity"))
 
     p = xml.parsers.expat.ParserCreate(namespace_separator = '!')
 
-    p.XmlDeclHandler = None
+    p.XmlDeclHandler = XmlDeclHandler
     p.StartDoctypeDeclHandler = StartDoctypeDeclHandler
-    p.EndDoctypeDeclHandler = None
+    p.EndDoctypeDeclHandler = EndDoctypeDeclHandler
     p.ElementDeclHandler = ElementDeclHandler
     p.AttlistDeclHandler = AttlistDeclHandler
     p.StartElementHandler = StartElementHandler
@@ -757,13 +778,13 @@ def read_xml_file(f, log, namespace, start_root_element):
     p.UnparsedEntityDeclHandler = UnparsedEntityDeclHandler
     p.EntityDeclHandler = EntityDeclHandler
     p.NotationDeclHandler = NotationDeclHandler
-    p.StartNamespaceDeclHandler = None
-    p.EndNamespaceDeclHandler = None
-    p.CommentHandler = None
+    p.StartNamespaceDeclHandler = StartNamespaceDeclHandler
+    p.EndNamespaceDeclHandler = EndNamespaceDeclHandler
+    p.CommentHandler = CommentHandler
     p.StartCdataSectionHandler = StartCdataSectionHandler
-    p.EndCdataSectionHandler = None
+    p.EndCdataSectionHandler = EndCdataSectionHandler
     p.DefaultHandler = DefaultHandler
-    p.DefaultHandlerExpand = None
+    p.DefaultHandlerExpand = DefaultHandlerExpand
     p.NotStandaloneHandler = NotStandaloneHandler
     p.ExternalEntityRefHandler = ExternalEntityRefHandler
 
