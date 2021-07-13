@@ -37,6 +37,9 @@ nodist_pkgpyexec_PYTHON = config.py
 EXTRA_DIST = config.py.in
 CLEANFILES = config.py config.pyc
 
+clean-local:
+	rm -rf __pycache__/
+
 # Make sure config.py is available when running from builddir
 all-local: $(nodist_pkgpyexec_PYTHON)
 

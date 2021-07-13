@@ -53,3 +53,7 @@ nobase_gafpyexec_PYTHON = \
 	netlist/pp_slotting.py \
 	netlist/reportgui.py \
 	netlist/slib.py
+
+uninstall-local:
+	@$(NORMAL_UNINSTALL)
+	rm -rf $(DESTDIR)$(gafpyexecdir)/netlist/__pycache__/

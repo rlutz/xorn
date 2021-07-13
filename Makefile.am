@@ -49,6 +49,9 @@ CLEANFILES = \
 	built-packages/gaf.py \
 	built-packages/gaf.pyc
 
+clean-local:
+	rm -rf built-packages/__pycache__/
+
 ACLOCAL_AMFLAGS = -I m4
 
 EXTRA_DIST = \
